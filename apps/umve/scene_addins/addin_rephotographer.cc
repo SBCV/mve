@@ -172,7 +172,7 @@ AddinRephotographer::on_rephoto_view (mve::View::Ptr view)
         /* Convert depthmap to MVE format. */
         math::Matrix3f inv_calib;
         camera_info.fill_inverse_calibration(*inv_calib, width, height);
-        mve::image::depthmap_convert_conventions<float>(depth, inv_calib, true);
+        mve::image::depthmap_convert_conventions<float>(depth, inv_calib, true, true);
         view->set_image(depth, dest_depth_name);
     }
 

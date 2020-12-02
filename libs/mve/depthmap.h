@@ -61,7 +61,7 @@ depthmap_bilateral_filter (FloatImage::ConstPtr dm,
 template <typename T>
 void
 depthmap_convert_conventions (typename Image<T>::Ptr dm,
-    math::Matrix3f const& invproj, bool to_mve);
+    math::Matrix3f const& invproj, bool to_mve, bool add_pixel_offset);
 
 MVE_IMAGE_NAMESPACE_END
 MVE_NAMESPACE_END
@@ -167,16 +167,18 @@ MVE_IMAGE_NAMESPACE_BEGIN
 template <typename T>
 inline void
 depthmap_convert_conventions (typename Image<T>::Ptr dm,
-    math::Matrix3f const& invproj, bool to_mve)
+    math::Matrix3f const& invproj, bool to_mve, bool add_pixel_offset)
 {
     std::size_t w = dm->width();
     std::size_t h = dm->height();
     std::size_t pos = 0;
+    float offset;
+    if (add_pixel_offset) { offset = 0.5f; } else { offset = 0.0f; }
     for (std::size_t y = 0; y < h; ++y)
         for (std::size_t x = 0; x < w; ++x, ++pos)
         {
             // Construct viewing ray for that pixel
-            math::Vec3f px((float)x + 0.5f, (float)y + 0.5f, 1.0f);
+            math::Vec3f px((float)x + offset, (float)y + offset, 1.0f);
             px = invproj * px;
             // Measure length of viewing ray
             double len = px.norm();

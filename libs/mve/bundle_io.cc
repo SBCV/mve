@@ -1155,7 +1155,7 @@ load_colmap_depth_map(int scale, mve::CameraInfo& mve_cam, int original_width,
     mve_cam.fill_inverse_calibration(*inv_calib, original_width,
         original_height);
     mve::image::depthmap_convert_conventions<float>(depth_image, inv_calib, 
-        true);
+        true, false);
 
     if (depth_width == original_width && depth_height == original_height)
     {
